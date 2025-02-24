@@ -1,5 +1,6 @@
 import streamlit as st
-from auth import Auth
+#from auth import Auth
+from db_users import UserManager
 
 if st.session_state.user:
     with st.form("注销账号"):
@@ -11,7 +12,7 @@ if st.session_state.user:
             key="delete_confirm"
         )
         if st.form_submit_button("注销账号",type="secondary"):
-            success, message = Auth.delete_account(
+            success, message = UserManager().delete_account(
                 st.session_state.user['_id'], 
                 confirm_password
             )

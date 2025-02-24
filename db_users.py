@@ -1,5 +1,5 @@
 import pymongo
-from datetime import datetime
+from datetime import datetime, timedelta
 from bson import ObjectId
 from pydantic import BaseModel, Field
 from typing import List, Optional
@@ -8,6 +8,9 @@ import random
 import time
 from hashlib import sha256
 import string
+
+from config.setting import MONGODB_URL, MONGODB_DB_NAME
+
 
 def generate_user_id():
     timestamp = int(time.time() * 1000)
@@ -24,11 +27,12 @@ def generate_reset_code():
 class UserManager:
     def __init__(
             self,
-            db_url="mongodb://localhost:27017/",
+            db_url=MONGODB_URL,
+            db_name=MONGODB_DB_NAME
             ):
         # MongoDB 连接
-        self.client = pymongo.MongoClient("mongodb://localhost:27017/")
-        self.db = self.client['math_learning_db']
+        self.client = pymongo.MongoClient(db_url)
+        self.db = self.client[db_name]
         self.users = self.db.users
 
     def register(
@@ -84,4 +88,88 @@ class UserManager:
                 return False, "用户名或密码错误"
         except Exception as e:
             return False, f"登录失败: {str(e)}"
+        
+    def delete_account(
+            self,
+            default_id,
+            password
+            ):
+        try:
+            user = self.users.find_one({'_id': ObjectId(default_id)})
+            if not user:
+                return False, "用户不存在" 
+            if user['password'] != hash_password(password):
+                return False, "密码错误"
+            result = self.users.update_one(
+                {'_id': ObjectId(default_id)},
+                {'$set': {'is_active': False,'deleted_at': datetime.utcnow()}}
+            )
+            return result.modified_count > 0, "账号已注销"
+            
+        except Exception as e:
+            return False, f"注销失败: {str(e)}"
     
+    def update_password(
+            self,
+            default_id,
+            old_password,
+            new_password
+            ):
+        try:
+            user = self.users.find_one({'_id': ObjectId(default_id), 'is_active': True})
+            if not user:
+                return False, "用户不存在"
+            if user['password'] != hash_password(old_password):
+                return False, "原密码错误"
+            result = self.users.update_one(
+                {'_id': ObjectId(default_id)},
+                {'$set': {'password': hash_password(new_password)}}
+            )
+            return result.modified_count > 0, "密码修改成功"
+        except Exception as e:
+            return False, f"密码修改失败: {str(e)}"
+    
+    def request_password_reset(
+            self,
+            email
+            ):
+        try:
+            user = self.users.find_one({'email': email,'is_active': True})
+            if not user:
+                return False, "邮箱不存在或用户已注销"
+            reset_code = generate_reset_code()
+            expiry = datetime.utcnow() + timedelta(minutes=1)
+            self.users.update_one(
+                {'email': email},
+                {'$set': {'reset_code': reset_code, 'reset_expiry': expiry}}
+            )
+            # TODO:发送邮件（这里先返回验证码，实际应该通过邮件发送）
+            return True, reset_code
+        except Exception as e:
+            return False, {str(e)}
+    
+    def reset_password(
+            self,
+            email,
+            reset_code,
+            new_password
+            ):
+        try:
+            user = self.users.find_one({
+                'email': email, 
+                'reset_code': reset_code,
+                'reset_code_expiry': {'$gt': datetime.utcnow()}
+                })
+            if not user:
+                return False, "验证码无效或已过期"
+            # 更新密码并清除重置码
+            result = self.users.update_one(
+                {'email': email},
+                {
+                    '$set': {'password': hash_password(new_password)},
+                    '$unset': {'reset_code': "", 'reset_code_expiry': ""}
+                    }
+            )
+            return result.modified_count > 0, "密码重置成功"
+        except Exception as e:
+            return False, {str(e)}

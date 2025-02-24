@@ -5,6 +5,7 @@ from bson import ObjectId
 from PIL import Image
 import os
 import io
+from config.setting import MONGODB_URL, MONGODB_DB_NAME
 
 def save_book_file(file) -> str:
     """保存书籍文件"""
@@ -32,10 +33,12 @@ def get_default_cover():
 class BookManager:
     def __init__(
             self, 
-            db_url="mongodb://localhost:27017/"):
+            db_url=MONGODB_URL,
+            db_name=MONGODB_DB_NAME
+    ):
         # MongoDB 连接
         self.client = MongoClient(db_url)
-        self.db = self.client['math_learning_db']
+        self.db = self.client[db_name]
         self.books = self.db.books
 
     def add_book(

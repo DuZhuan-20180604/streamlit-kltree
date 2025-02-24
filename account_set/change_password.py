@@ -1,5 +1,6 @@
 import streamlit as st
-from auth import Auth
+#from auth import Auth
+from db_users import UserManager
 
 if st.session_state.user:
     with st.form("修改密码"):
@@ -14,7 +15,7 @@ if st.session_state.user:
             elif new_password != confirm_password:
                 st.error("两次密码不一致")
             else:
-                success, message = Auth.update_password(
+                success, message = UserManager().update_password(
                         st.session_state.user['_id'],
                         old_password,
                         new_password

@@ -1,8 +1,8 @@
 import streamlit as st
+from pathlib import Path
 
 
-
-chapter1=r"F:\streamlit_kltree\streamlit_kltree\高一上册第一章.md"
+chapter1=Path(__file__).parent / "markdown" /"高一上册第一章.md"
 def read_markdown_file(markdown_file):
     with open(markdown_file, 'r', encoding='utf-8') as f:
         return f.read()

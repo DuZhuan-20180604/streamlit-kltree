@@ -36,8 +36,7 @@ def create_book_card(book:Book):
 """
     st.markdown(card_html, unsafe_allow_html=True)
 
-    # <img src="F:\\streamlit_kltree\\kltree\\book_covers\\Leonhard_Euler.jpg" style="width: 150px; height: 200px; object-fit: cover; border-radius: 10px;">
-
+    
 def create_bbook_card(book:Book):
     """创建书籍卡片组件"""
     
@@ -69,8 +68,7 @@ def create_bbook_card(book:Book):
         
 @st.dialog(title="预览",width="large")
 def book_preview_dialog(book):
-    #st.info("预览功能暂未开放")
-    
+
     with st.spinner("正在加载预览..."):
         pdf_viewer(
             book.file_path, 

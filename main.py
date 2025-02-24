@@ -1,6 +1,6 @@
 
 import streamlit as st
-from auth import Auth
+#from auth import Auth
 st.set_page_config(
     page_title="知识学习树",
     page_icon="🌲",
@@ -13,7 +13,7 @@ if "user" not in st.session_state:
     st.session_state.user = None
     st.session_state.role=None
 
-main_page=st.Page("main_page/start.py",title="主页",icon=":material/home:",default=True)
+main_page=st.Page("home_page/home.py",title="主页",icon=":material/home:",default=True)
 
 login_page=st.Page("account/login.py",title="登录",icon=":material/login:")
 register_page=st.Page("account/register.py",title="注册",icon=":material/assignment:")
