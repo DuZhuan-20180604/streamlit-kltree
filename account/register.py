@@ -2,6 +2,8 @@ import streamlit as st
 #from auth import Auth
 from db_users import UserManager
 
+user_manager = UserManager()
+
 def show_register_ui():
     with st.form("register_form"):
         username = st.text_input("用户名")
@@ -16,7 +18,7 @@ def show_register_ui():
                 elif password != confirm_password:
                     st.error("两次密码不一致")
                 else:
-                    success, message = UserManager().register(username, email, password)
+                    success, message = user_manager.register(username, email, password)
                     if success:
                         st.success(message)
                     else:

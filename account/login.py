@@ -2,6 +2,7 @@ import streamlit as st
 #from auth import Auth
 from db_users import UserManager
 
+user_manager = UserManager()
 def show_password_reset_ui():
     st.subheader("重置密码")
 
@@ -12,7 +13,7 @@ def show_password_reset_ui():
         confirm_password = st.text_input("确认新密码", type="password")
         if st.form_submit_button("获取验证码"):
             if email:
-                success, message = UserManager().request_password_reset(email)
+                success, message = user_manager.request_password_reset(email)
                 print(success, message) 
                 if success:
                     st.session_state.reset_email = email
@@ -30,7 +31,7 @@ def show_password_reset_ui():
             elif new_password != confirm_password:
                 st.error("两次密码不一致")
             else:
-                success, message = UserManager().reset_password(
+                success, message = user_manager.reset_password(
                     st.session_state.reset_email,
                     reset_code,
                     new_password
@@ -71,7 +72,7 @@ def show_login_ui():
                 st.warning('没有账号？请到注册页注册!', icon="⚠️")
 
             if submit:
-                success, user = UserManager().login(identifier, password)
+                success, user = user_manager.login(identifier, password)
                 print("b:",success, user)
                 if success:
                     st.session_state.user = user

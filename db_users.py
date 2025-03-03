@@ -31,9 +31,14 @@ class UserManager:
             db_name=MONGODB_DB_NAME
             ):
         # MongoDB 连接
-        self.client = pymongo.MongoClient(db_url)
-        self.db = self.client[db_name]
-        self.users = self.db.users
+        try:
+            self.client = pymongo.MongoClient(db_url)
+            self.db = self.client[db_name]
+            self.users = self.db.users
+            self.is_connected = True
+        except Exception as e:
+            self.is_connected = False
+            raise Exception(f"连接数据库失败: {str(e)}")
 
     def register(
         self,

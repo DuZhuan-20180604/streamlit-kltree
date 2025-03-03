@@ -36,10 +36,15 @@ class BookManager:
             db_url=MONGODB_URL,
             db_name=MONGODB_DB_NAME
     ):
+        try:
         # MongoDB 连接
-        self.client = MongoClient(db_url)
-        self.db = self.client[db_name]
-        self.books = self.db.books
+            self.client = MongoClient(db_url)
+            self.db = self.client[db_name]
+            self.books = self.db.books
+            self.is_connected = True
+        except Exception as e:
+            self.is_connected = False
+            raise Exception(f"连接数据库失败: {str(e)}")
 
     def add_book(
             self, 
