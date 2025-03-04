@@ -32,7 +32,14 @@ class UserManager:
             ):
         # MongoDB 连接
         try:
-            self.client = pymongo.MongoClient(db_url)
+            self.client = pymongo.MongoClient(
+                db_url,
+                serverSelectionTimeoutMS=5000,
+                connectTimeoutMS=5000,
+                socketTimeoutMS=5000
+                )
+            # 验证连接
+            self.client.admin.command('ping')
             self.db = self.client[db_name]
             self.users = self.db.users
             self.is_connected = True
@@ -88,7 +95,7 @@ class UserManager:
                     {'_id':user['_id']},
                     {'$set': {'last_login': datetime.utcnow()}}
                 )
-                return True, "登录成功"
+                return True, user
             else:
                 return False, "用户名或密码错误"
         except Exception as e:

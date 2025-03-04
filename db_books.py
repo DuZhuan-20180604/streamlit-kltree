@@ -38,7 +38,14 @@ class BookManager:
     ):
         try:
         # MongoDB 连接
-            self.client = MongoClient(db_url)
+            self.client = MongoClient(
+                db_url,
+                serverSelectionTimeoutMS=5000,
+                connectTimeoutMS=5000,
+                socketTimeoutMS=5000
+                )
+            # 验证连接
+            self.client.admin.command('ping')
             self.db = self.client[db_name]
             self.books = self.db.books
             self.is_connected = True

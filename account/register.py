@@ -1,5 +1,5 @@
 import streamlit as st
-#from auth import Auth
+
 from db_users import UserManager
 
 user_manager = UserManager()
