@@ -15,7 +15,6 @@ def get_image_as_base64(path):
     return base64.b64encode(data).decode()
 #img_base64 = get_image_as_base64("F:/streamlit_kltree/kltree/book_covers/Leonhard_Euler.jpg")
 default_image=get_default_cover()
-
 def create_book_card(book:Book):
     """创建书籍卡片组件"""
     card_html = f"""

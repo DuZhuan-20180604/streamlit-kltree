@@ -186,7 +186,16 @@ class UserManager:
         except Exception as e:
             return False, {str(e)}
         
-    def get_user(self, user_id: str) -> Optional[User]:
+    def get_user(self, identifier: str) -> Optional[User]:
         """获取单本书籍信息"""
-        user_data = self.users.find_one({"_id": ObjectId(user_id)})
+        #user_data = self.users.find_one({"_id": ObjectId(user_id)})
+
+        user_data = self.users.find_one({
+                '$or': [
+                    {'username': identifier},
+                    {'email': identifier},
+                    {'user_id': identifier}
+                ],
+            })
         return User(**user_data) if user_data else None
+    

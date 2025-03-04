@@ -1,10 +1,5 @@
 .env
-
 __pycache__/
 *.pyc
 .DS_Store
 .streamlit/secrets.toml
-uploads/*
-!uploads/.gitkeep
-book_covers/*
-!book_covers/.gitkeep
