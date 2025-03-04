@@ -71,6 +71,11 @@ else:
         
         ### 🌟 立即加入
         注册账号，开启你的数学学习之旅！
-        [![点击我](kltree/static/Leonhard_Euler.jpg.jpg)](https://www.baidu.com)
+    
         """)
+    st.markdown("[![点击我](./app/static/Leonhard_Euler.jpg)](https://www.baidu.com)")
+    st.markdown(
+        '<img src="./app/static/Leonhard_Euler.jpg" height="333" style="border: 5px solid orange">',
+        unsafe_allow_html=True
+    )
     show_donation()

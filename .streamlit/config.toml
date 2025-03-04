@@ -1,2 +1,7 @@
 [server]
 enableStaticServing=true
+
+[ui]
+gitHubUrl=false
+hideMenu=true
+hideFooter=true
