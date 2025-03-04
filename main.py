@@ -1,12 +1,17 @@
 
 import streamlit as st
 #from auth import Auth
+from PIL import Image
+from account.profile import show_user_profile
+
 st.set_page_config(
     page_title="知识学习树",
     page_icon="🌲",
     layout="wide",
     initial_sidebar_state="expanded"
 )
+
+
 
 #st.write(st.session_state)
 if "user" not in st.session_state:
@@ -65,7 +70,7 @@ if st.session_state.role in [None]:
     pages_dict["考研"]=ky_tb_pages
     pages_dict["下载专区"]=download_pages
     pages_dict["工具"]=tool_pages
-if st.session_state.role in ["USER","user"]: 
+elif st.session_state.role in ["USER","user"]: 
     pages_dict["主页"]=[main_page]   
     pages_dict["中考"]=zk_pages
     pages_dict["高考"]=gk_pages
@@ -80,11 +85,16 @@ with st.sidebar:
             st.session_state.user=None
             st.session_state.role=None
             st.rerun()
+        user_data=st.session_state.user
+        print("user_data:",user_data)
+        show_user_profile(user_data)
+
+    #show_donation()
 
 pg=st.navigation(pages_dict) 
 pg.run()
 
-print(st.session_state)
+print("会话状态:",st.session_state)
 
 
 

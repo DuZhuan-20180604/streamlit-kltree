@@ -185,3 +185,8 @@ class UserManager:
             return result.modified_count > 0, "密码重置成功"
         except Exception as e:
             return False, {str(e)}
+        
+    def get_user(self, user_id: str) -> Optional[User]:
+        """获取单本书籍信息"""
+        user_data = self.users.find_one({"_id": ObjectId(user_id)})
+        return User(**user_data) if user_data else None

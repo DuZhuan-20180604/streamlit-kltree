@@ -13,7 +13,8 @@ def get_image_as_base64(path):
     with open(path, "rb") as f:
         data = f.read()
     return base64.b64encode(data).decode()
-img_base64 = get_image_as_base64("F:/streamlit_kltree/kltree/book_covers/Leonhard_Euler.jpg")
+#img_base64 = get_image_as_base64("F:/streamlit_kltree/kltree/book_covers/Leonhard_Euler.jpg")
+default_image=get_default_cover()
 
 def create_book_card(book:Book):
     """创建书籍卡片组件"""
@@ -26,7 +27,7 @@ def create_book_card(book:Book):
         margin: 16px 0;
         text-align: center;
     ">
-        <img src="data:image/jpeg;base64,{get_image_as_base64(book.cover_path) if book.cover_path else img_base64}" width="180" height="240">
+        <img src="data:image/jpeg;base64,{get_image_as_base64(book.cover_path) if book.cover_path else default_image}" width="180" height="240">
         <div style="color: #FF7F27;font-size: 1.2em; font-weight: bold; margin: 12px 0;">{book.title}</div>
         <div style="color: #666; font-style: italic; margin-bottom: 8px;">作者：{book.author}</div>
         <div style="color": #507F80;"background-color: #e9ecef; padding: 4px 8px; border-radius: 12px; display: inline-block; margin-bottom: 12px;">
