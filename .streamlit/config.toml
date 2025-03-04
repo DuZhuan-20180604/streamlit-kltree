@@ -2,6 +2,6 @@
 enableStaticServing=true
 
 [ui]
-gitHubUrl=false
+gitHubUrl=""
 hideMenu=true
 hideFooter=true
