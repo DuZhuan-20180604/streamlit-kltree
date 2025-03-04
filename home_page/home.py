@@ -48,7 +48,8 @@ if st.session_state.user:
         - 循序渐进
         - 多做练习
         - 及时复习
-            
+        [![点击我](kltree/static/Leonhard_Euler.jpg.jpg)](https://www.baidu.com)
+              
             """)
     show_donation()
 else:
@@ -70,5 +71,6 @@ else:
         
         ### 🌟 立即加入
         注册账号，开启你的数学学习之旅！
+        [![点击我](kltree/static/Leonhard_Euler.jpg.jpg)](https://www.baidu.com)
         """)
     show_donation()

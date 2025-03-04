@@ -4,23 +4,7 @@ import streamlit as st
 from PIL import Image
 from account.profile import show_user_profile
 
-st.markdown("""
-    <style>
-        /* 隐藏 GitHub 链接 */
-        #MainMenu {visibility: hidden;}
-        footer {visibility: hidden;}
-        
-        /* 隐藏部署信息 */
-        .viewerBadge_container__1QSob {
-            display: none;
-        }
-        
-        /* 隐藏右上角汉堡菜单 */
-        .stDeployButton {
-            display: none;
-        }
-    </style>
-""", unsafe_allow_html=True)
+
 
 
 
@@ -28,7 +12,12 @@ st.set_page_config(
     page_title="知识学习树",
     page_icon="🌲",
     layout="wide",
-    initial_sidebar_state="expanded"
+    initial_sidebar_state="expanded",
+    menu_items={
+        'Get Help': 'https://www.extremelycoolapp.com/help',
+        'Report a bug': "https://www.extremelycoolapp.com/bug",
+        'About': "# This is a header. This is an *extremely* cool app!"
+    }
 )
 
 
